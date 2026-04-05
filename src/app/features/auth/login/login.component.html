@@ -1,0 +1,62 @@
+<div
+    class="bg-surface-50 dark:bg-surface-950 flex flex-col items-center justify-between w-full min-h-screen pt-16 pb-16 overflow-auto">
+    <div class="flex w-full flex-grow bg-surface-0 dark:bg-surface-900 rounded-3xl shadow-lg overflow-hidden">
+        <!-- left panel -->
+        <div
+            class="hidden md:flex w-1/2 bg-gradient-to-br from-primary to-blue-300 items-center justify-center text-white p-8">
+            <div class="text-center">
+                <h2 class="text-4xl font-bold mb-4">Welcome to Health Forge!</h2>
+                <p class="text-lg">Please login with your role to continue.</p>
+            </div>
+        </div>
+
+        <!-- right panel -->
+        <div class="w-full md:w-1/2 p-8 sm:p-12 relative">
+            <div
+                style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
+                <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
+                    <div class="text-center mb-8">
+                        <!-- svg omitted for brevity -->
+                        <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to Health
+                            Forge!</div>
+                        <span class="text-muted-color font-medium">Sign in to continue</span>
+                    </div>
+
+                    <form (ngSubmit)="onLogin()">
+                        <div class="mx-auto w-full max-w-md">
+                            <label for="email1"
+                                class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
+                            <input pInputText id="email1" type="text" placeholder="e.g. user@healthforge.com"
+                                class="w-full mb-8" [(ngModel)]="email" name="email" required />
+
+                            <label for="password1"
+                                class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
+                            <p-password id="password1" [(ngModel)]="password" name="password" placeholder="Admin@123"
+                                [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false"
+                                required></p-password>
+
+                            <div class="flex items-center justify-between mt-2 mb-8 gap-8">
+                                <div class="flex items-center">
+                                    <p-checkbox [(ngModel)]="checked" id="rememberme1" binary class="mr-2"
+                                        name="remember"></p-checkbox>
+                                    <label for="rememberme1">Remember me</label>
+                                </div>
+                                <span
+                                    class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot
+                                    password?</span>
+                            </div>
+                            <p-button label="Sign In" styleClass="w-full" type="submit"></p-button>
+                            <div class="mt-4 text-center">
+                                <a routerLink="/signup" class="text-primary cursor-pointer">Create Hospital Account</a>
+                            </div>
+                            <div class="mt-4 text-sm text-gray-600 text-center">
+                                <span>Use <strong>user@healthforge.com</strong> / <strong>Admin@123</strong> to log in.</span>
+                            </div>
+                            <div *ngIf="error" class="text-red-500 mt-4 text-center">{{ error }}</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

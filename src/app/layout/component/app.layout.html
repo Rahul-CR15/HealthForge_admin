@@ -1,0 +1,16 @@
+<div class="layout-wrapper" [ngClass]="containerClass">
+    <app-topbar></app-topbar>
+    <app-sidebar></app-sidebar>
+    <button class="layout-sidebar-anchor" type="button" (click)="layoutService.onMenuToggle()"
+        [ngClass]="{ 'layout-sidebar-anchor-active': !layoutService.layoutState().staticMenuDesktopInactive }">
+        <i
+            [ngClass]="{ 'pi': true, 'pi-chevron-left': !layoutService.layoutState().staticMenuDesktopInactive, 'pi-chevron-right': layoutService.layoutState().staticMenuDesktopInactive }"></i>
+    </button>
+    <div class="layout-main-container">
+        <div class="layout-main">
+            <router-outlet></router-outlet>
+        </div>
+        <app-footer></app-footer>
+    </div>
+    <div class="layout-mask animate-fadein"></div>
+</div>

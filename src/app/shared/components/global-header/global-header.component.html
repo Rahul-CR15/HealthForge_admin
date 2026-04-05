@@ -1,0 +1,15 @@
+<div
+    class="fixed top-0 left-0 w-full h-16 bg-surface-0 dark:bg-surface-900 shadow-md z-[1000] flex items-center justify-between px-6 border-b border-surface-200 dark:border-surface-700">
+    <div class="flex items-center gap-4">
+        <span class="text-2xl font-bold text-primary">Health Forge</span>
+    </div>
+
+    <div class="flex items-center gap-4">
+        <div class="flex flex-col items-end mr-4">
+            <span class="text-sm font-medium text-surface-900 dark:text-surface-0">{{ auth.getUserEmail() }}</span>
+        </div>
+        <p-button icon="pi pi-sign-out" [rounded]="true" [text]="true" severity="danger" (click)="auth.logout()"
+            label="Logout"></p-button>
+    </div>
+</div>
+<div class="h-16"></div> <!-- Spacer for fixed header -->
