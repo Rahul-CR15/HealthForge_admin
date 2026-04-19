@@ -1,0 +1,50 @@
+<div class="settings-page">
+    <div class="settings-tabs-wrapper">
+        <div class="settings-tabs">
+            <!-- LEFT ARROW -->
+            <button type="button" class="arrow-button" (click)="shiftTabs(-1)">
+                <i class="pi pi-chevron-left text-xs"></i>
+            </button>
+
+            <!-- VISIBLE TABS (SCROLLABLE) -->
+            <div class="visible-tabs" #tabsContainer>
+                <button *ngFor="let tab of tabs" 
+                        class="tab-button" 
+                        [class.active]="tabs[activeIndex].route === tab.route"
+                        (click)="navigateToTab(tab)">
+                    {{ tab.header }}
+                </button>
+            </div>
+
+            <!-- RIGHT ACTIONS -->
+            <div class="right-actions">
+                <!-- ALL MENU BUTTON -->
+                <button type="button" class="all-button" (click)="allMenu.toggle($event, $event.currentTarget)">
+                    All <i class="pi pi-chevron-down text-xs ml-1"></i>
+                </button>
+
+                <!-- RIGHT ARROW -->
+                <button type="button" class="arrow-button" (click)="shiftTabs(1)">
+                    <i class="pi pi-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ALL MENU POPOVER -->
+    <p-popover #allMenu styleClass="all-tabs-popover" appendTo="body" dismissable="true">
+        <div class="menu-grid">
+            <button type="button" *ngFor="let tab of tabs" 
+                    class="grid-item" 
+                    [class.active]="tabs[activeIndex].route === tab.route"
+                    (click)="navigateToTab(tab, allMenu)">
+                <i [class]="tab.icon"></i>
+                <span>{{ tab.header }}</span>
+            </button>
+        </div>
+    </p-popover>
+
+    <div class="settings-content">
+        <router-outlet></router-outlet>
+    </div>
+</div>

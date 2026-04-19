@@ -1,0 +1,112 @@
+// Component-scoped layout for ManageCompanyComponent
+// Uses explicit flexbox rows so layout is self-contained,
+// independent of global PrimeFlex or other stylesheet load order.
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+// ─── d-modal structure ───────────────────────────────────────────
+.d-modal {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+
+  .d-head {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e7e7e7;
+    background: #fff;
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0;
+      flex: 1;
+    }
+  }
+
+  .d-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1.25rem 1.5rem;
+    background: #fff;
+  }
+
+  .d-footer {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #e7e7e7;
+    background: #fff;
+    padding: 0.875rem 1.5rem;
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+}
+
+// ─── Form layout ─────────────────────────────────────────────────
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+// A visual row that holds one or more fields side-by-side
+.form-row {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+
+  // Width helpers applied directly on .field inside .form-row
+  .col-full  { flex: 0 0 100%; }
+  .col-half  { flex: 1 1 0;    min-width: 0; }
+  .col-third { flex: 1 1 0;    min-width: 0; }
+  .col-1of3  { flex: 0 0 calc(33.333% - 0.5rem); }
+  .col-2of3  { flex: 0 0 calc(66.666% - 0.25rem); }
+}
+
+// Each field: label on top, input below
+.form-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+
+  label {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 4px;
+    white-space: nowrap;
+  }
+
+  // Force PrimeNG inputs to fill the field
+  input.p-inputtext,
+  ::ng-deep .p-inputtext,
+  ::ng-deep .p-password,
+  ::ng-deep .p-password-input,
+  ::ng-deep .p-password > .p-inputtext {
+    width: 100% !important;
+  }
+
+  ::ng-deep p-password {
+    display: block;
+    width: 100%;
+
+    .p-password {
+      width: 100%;
+      display: flex;
+
+      input {
+        flex: 1;
+        width: 100% !important;
+      }
+    }
+  }
+}

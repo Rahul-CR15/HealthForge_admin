@@ -85,11 +85,34 @@ export class AppMenuitem {
     }
 
     updateActiveStateFromRoute() {
-        let activeRoute = this.router.isActive(this.item.routerLink[0], { paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' });
+        const route = this.getRouterLinkPath();
+        if (!route) {
+            return;
+        }
+
+        const activeRoute = this.router.isActive(route, {
+            paths: 'exact',
+            queryParams: 'ignored',
+            matrixParams: 'ignored',
+            fragment: 'ignored'
+        });
 
         if (activeRoute) {
             this.layoutService.onMenuStateChange({ key: this.key, routeEvent: true });
         }
+    }
+
+    private getRouterLinkPath(): string | null {
+        const routerLink = this.item.routerLink;
+        if (!routerLink) {
+            return null;
+        }
+
+        if (Array.isArray(routerLink)) {
+            return routerLink.join('/').replace(/\/\/+/, '/');
+        }
+
+        return String(routerLink);
     }
 
     itemClick(event: Event) {

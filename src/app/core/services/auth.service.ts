@@ -14,24 +14,19 @@ export class AuthService {
     constructor(private tokenService: TokenService, private router: Router) { }
 
     /**
-     * Simple demo login that only checks password and email domain.
+     * Static demo login for the Super Admin account.
      */
     login(credentials: Credentials): boolean {
         const { email, password } = credentials;
 
-        // Strict demo validation
-        if (password !== 'Admin@123') {
-            return false;
-        }
-
-        const emailLower = email.toLowerCase();
-        if (!emailLower.endsWith('@healthforge.com')) {
+        const normalizedEmail = email.trim().toLowerCase();
+        if (normalizedEmail !== 'superadmin@gmail.com' || password !== 'Admin@123') {
             return false;
         }
 
         // store a token and email - no role logic anymore
         this.tokenService.storeToken('demo-token-' + Date.now());
-        this.tokenService.storeEmail(email);
+        this.tokenService.storeEmail(normalizedEmail);
         this.router.navigate(['/dashboard']);
         return true;
     }

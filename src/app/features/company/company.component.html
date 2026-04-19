@@ -1,0 +1,31 @@
+<p-toast></p-toast>
+<div class="p-4">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">Company Masters</h2>
+        <button pButton label="New Company" icon="pi pi-plus" (click)="openNew()"></button>
+    </div>
+
+    <p-table [value]="companies()" [paginator]="true" [rows]="10" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Company</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-company>
+            <tr>
+                <td>{{ company.companyName }}</td>
+                <td>{{ company.firstName }} {{ company.lastName }}</td>
+                <td>{{ company.email }}</td>
+                <td>{{ company.phoneCode ? '+' + company.phoneCode + ' ' : ''}}{{ company.phone }}</td>
+                <td>
+                    <button pButton icon="pi pi-pencil" class="p-button-text" (click)="editCompany(company)"></button>
+                    <button pButton icon="pi pi-trash" class="p-button-text p-button-danger" (click)="deleteCompany(company)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

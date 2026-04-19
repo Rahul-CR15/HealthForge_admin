@@ -1,0 +1,106 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.d-modal {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+
+  .d-head {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--surface-border);
+    background: #fff;
+
+    h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+  }
+
+  .d-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1.25rem 1.5rem;
+    background: #fff;
+  }
+
+  .d-footer {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    border-top: 1px solid var(--surface-border);
+    background: #fff;
+    padding: 0.875rem 1.5rem;
+  }
+}
+
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.form-row .form-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.form-row .col-full {
+  flex: 0 0 100%;
+}
+
+.form-row .col-half,
+.form-row .col-third {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.form-row .col-1of3 {
+  flex: 0 0 calc(33.333% - 0.5rem);
+}
+
+.form-row .col-2of3 {
+  flex: 0 0 calc(66.666% - 0.25rem);
+}
+
+.form-field label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-color-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.form-field input,
+::ng-deep .p-inputtext,
+::ng-deep .p-dropdown,
+::ng-deep .p-inputtextarea,
+::ng-deep .p-select {
+  width: 100% !important;
+}
+
+.p-input-icon-left {
+  position: relative;
+}
+
+.p-input-icon-left input {
+  padding-left: 2.5rem;
+}

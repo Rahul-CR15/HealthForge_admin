@@ -14,4 +14,6 @@ export interface Company {
     password?: string;
     phone: string;
     phoneCode?: string;
-} 
+    status?: number;
+    isActive?: boolean;
+}

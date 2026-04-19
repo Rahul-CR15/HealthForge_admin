@@ -1,0 +1,117 @@
+<div class="d-modal">
+
+  <!-- Header -->
+  <div class="d-head">
+      <h2>{{ category?.name }} Master Order</h2>
+      <div style="display: flex; gap: 8px;">
+          <button pButton *ngIf="!isAddNew" label="Add New" (click)="addNewItem()" class="p-button-outlined p-button-sm"
+            icon="pi pi-plus"></button>
+          <button pButton icon="pi pi-times" class="p-button-rounded p-button-text p-button-sm" (click)="closeModel()"></button>
+      </div>
+  </div>
+
+  <!-- Scrollable body -->
+  <div class="d-body">
+      
+      <!-- List View -->
+      <div *ngIf="!isAddNew">
+          <div class="mb-4">
+              <span class="p-input-icon-left w-full relative block">
+                  <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-surface-400"></i>
+                  <input type="search" pInputText class="w-full pl-10 py-2 border border-surface-300 dark:border-surface-600 rounded-md bg-transparent" placeholder="Search orders..." (input)="searchMasterOrder($event)">
+              </span>
+          </div>
+          
+          <div class="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-hidden">
+              <p-table [value]="masterOrderList" styleClass="p-datatable-striped">
+                  <ng-template pTemplate="header">
+                      <tr>
+                          <th pSortableColumn="name" class="font-medium text-surface-700 dark:text-surface-300 bg-surface-50 dark:bg-surface-900">Name <p-sortIcon field="name"></p-sortIcon></th>
+                          <th pSortableColumn="orderType1Name" class="font-medium text-surface-700 dark:text-surface-300 bg-surface-50 dark:bg-surface-900">Type 1 <p-sortIcon field="orderType1Name"></p-sortIcon></th>
+                          <th pSortableColumn="orderType2Name" class="font-medium text-surface-700 dark:text-surface-300 bg-surface-50 dark:bg-surface-900">Type 2 <p-sortIcon field="orderType2Name"></p-sortIcon></th>
+                          <th pSortableColumn="orderType3Name" class="font-medium text-surface-700 dark:text-surface-300 bg-surface-50 dark:bg-surface-900">Type 3 <p-sortIcon field="orderType3Name"></p-sortIcon></th>
+                          <th class="font-medium text-surface-700 dark:text-surface-300 bg-surface-50 dark:bg-surface-900 text-right">Actions</th>
+                      </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-item>
+                      <tr class="hover:bg-surface-50 dark:hover:bg-surface-800/50">
+                          <td class="text-surface-900 dark:text-surface-0 font-medium">{{ item.name }}</td>
+                          <td class="text-surface-600 dark:text-surface-400">{{ item.orderType1Name }}</td>
+                          <td class="text-surface-600 dark:text-surface-400">{{ item.orderType2Name }}</td>
+                          <td class="text-surface-600 dark:text-surface-400">{{ item.orderType3Name }}</td>
+                          <td>
+                              <div class="flex items-center justify-end gap-2">
+                                  <button pButton pRipple type="button" icon="pi pi-pencil" (click)="editItem(item)" class="p-button-rounded p-button-text p-button-sm"></button>
+                                  <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteItem(item?.id)" class="p-button-rounded p-button-danger p-button-text p-button-sm"></button>
+                              </div>
+                          </td>
+                      </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                      <tr>
+                          <td colspan="5" class="text-center p-8 text-surface-500 dark:text-surface-400">
+                              <div class="flex flex-col items-center">
+                                  <i class="pi pi-folder-open text-4xl mb-3 text-surface-300 dark:text-surface-600"></i>
+                                  <span>No orders found</span>
+                              </div>
+                          </td>
+                      </tr>
+                  </ng-template>
+              </p-table>
+          </div>
+      </div>
+
+      <!-- Form View -->
+      <form [formGroup]="masterOrderForm" *ngIf="isAddNew">
+          <div class="form-body">
+              
+              <!-- Name -->
+              <div class="form-row">
+                  <div class="form-field col-full">
+                      <label>Name *</label>
+                      <input type="text" placeholder="Enter name" formControlName="name" pInputText maxlength="100">
+                  </div>
+              </div>
+
+              <!-- Order Types -->
+              <div class="form-row">
+                  <div class="form-field col-third">
+                      <label>Order Type 1</label>
+                      <p-select [options]="getordertype1List" placeholder="Select Type" optionLabel="name"
+                          optionValue="id" formControlName="orderType1Id" [showClear]="true" appendTo="body" styleClass="w-full"></p-select>
+                  </div>
+                  <div class="form-field col-third">
+                      <label>Order Type 2</label>
+                      <p-select [options]="getordertype2List" placeholder="Select Type" optionLabel="name"
+                          optionValue="id" formControlName="orderType2Id" [showClear]="true" appendTo="body" styleClass="w-full"></p-select>
+                  </div>
+                  <div class="form-field col-third">
+                      <label>Order Type 3</label>
+                      <p-select [options]="getordertype3List" placeholder="Select Type" optionLabel="name"
+                          optionValue="id" formControlName="orderType3Id" [showClear]="true" appendTo="body" styleClass="w-full"></p-select>
+                  </div>
+              </div>
+
+              <!-- Description -->
+              <div class="form-row">
+                  <div class="form-field col-full">
+                      <label>Description</label>
+                      <textarea type="text" placeholder="Add description..." pTextarea rows="4" [autoResize]="true"
+                          maxlength="300" formControlName="description" class="w-full"></textarea>
+                  </div>
+              </div>
+
+          </div>
+      </form>
+
+  </div>
+
+  <!-- Sticky footer -->
+  <div class="d-footer" *ngIf="isAddNew">
+      <button pButton label="Cancel" class="p-button-text p-button-sm" (click)="resetItemForm()"></button>
+      <button pButton label="Save" icon="pi pi-check" class="p-button-sm"
+          (click)="addMasterOrder()" [disabled]="masterOrderForm.invalid">
+      </button>
+  </div>
+
+</div>

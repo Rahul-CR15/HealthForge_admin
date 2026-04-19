@@ -1,0 +1,102 @@
+<div class="d-modal">
+
+    <!-- Header -->
+    <div class="d-head">
+        <h2>{{ isNew ? 'New Company' : 'Edit Company' }}</h2>
+        <button pButton icon="pi pi-times" class="p-button-rounded p-button-text p-button-sm" (click)="close()"></button>
+    </div>
+
+    <!-- Scrollable form body -->
+    <div class="d-body">
+        <div class="form-body">
+
+            <!-- Company Name (full width) -->
+            <div class="form-row">
+                <div class="form-field col-full">
+                    <label for="companyName">Company Name *</label>
+                    <input id="companyName" pInputText [(ngModel)]="editing.companyName" placeholder="Enter company name" />
+                </div>
+            </div>
+
+            <!-- First / Middle / Last Name (3 equal columns) -->
+            <div class="form-row">
+                <div class="form-field col-third">
+                    <label for="firstName">First Name</label>
+                    <input id="firstName" pInputText [(ngModel)]="editing.firstName" />
+                </div>
+                <div class="form-field col-third">
+                    <label for="middleName">Middle Name</label>
+                    <input id="middleName" pInputText [(ngModel)]="editing.middleName" />
+                </div>
+                <div class="form-field col-third">
+                    <label for="lastName">Last Name</label>
+                    <input id="lastName" pInputText [(ngModel)]="editing.lastName" />
+                </div>
+            </div>
+
+            <!-- Opening Hour / Address (2 equal columns) -->
+            <div class="form-row">
+                <div class="form-field col-half">
+                    <label for="openingHr">Opening Hour</label>
+                    <input id="openingHr" pInputText [(ngModel)]="editing.openingHr" placeholder="e.g. 9AM - 5PM" />
+                </div>
+                <div class="form-field col-half">
+                    <label for="address">Address</label>
+                    <input id="address" pInputText [(ngModel)]="editing.address" />
+                </div>
+            </div>
+
+            <!-- City / State / Zipcode (3 equal columns) -->
+            <div class="form-row">
+                <div class="form-field col-third">
+                    <label for="city">City</label>
+                    <input id="city" pInputText [(ngModel)]="editing.city" />
+                </div>
+                <div class="form-field col-third">
+                    <label for="state">State</label>
+                    <input id="state" pInputText [(ngModel)]="editing.state" />
+                </div>
+                <div class="form-field col-third">
+                    <label for="zipcode">Zipcode</label>
+                    <input id="zipcode" pInputText [(ngModel)]="editing.zipcode" />
+                </div>
+            </div>
+
+            <!-- Email / Password (2 equal columns) -->
+            <div class="form-row">
+                <div class="form-field col-half">
+                    <label for="email">Email</label>
+                    <input id="email" pInputText [(ngModel)]="editing.email" />
+                </div>
+                <div class="form-field col-half">
+                    <label for="password">Password</label>
+                    <p-password id="password" [(ngModel)]="editing.password"
+                        [feedback]="false" [toggleMask]="true" appendTo="body">
+                    </p-password>
+                </div>
+            </div>
+
+            <!-- Phone Code (1/3) / Phone Number (2/3) -->
+            <div class="form-row">
+                <div class="form-field col-1of3">
+                    <label for="phoneCode">Phone Code</label>
+                    <input id="phoneCode" pInputText [(ngModel)]="editing.phoneCode" placeholder="e.g. 1" />
+                </div>
+                <div class="form-field col-2of3">
+                    <label for="phone">Phone Number</label>
+                    <input id="phone" pInputText [(ngModel)]="editing.phone" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Sticky footer -->
+    <div class="d-footer">
+        <button pButton label="Cancel" class="p-button-text p-button-sm" (click)="close()"></button>
+        <button pButton label="Save" icon="pi pi-check" class="p-button-sm"
+            (click)="save()" [disabled]="!editing.companyName">
+        </button>
+    </div>
+
+</div>
