@@ -17,18 +17,21 @@ export const settingsRoutes: Routes = [
             },
             {
                 path: 'ordertype1',
+                data: { orderType: 1 },
                 loadComponent: () =>
-                    import('./pages/order-type1/order-type1.component').then(m => m.OrderType1Component)
+                    import('./pages/order-type/order-type.component').then(m => m.OrderTypeComponent)
             },
             {
                 path: 'ordertype2',
+                data: { orderType: 2 },
                 loadComponent: () =>
-                    import('./pages/order-type2/order-type2.component').then(m => m.OrderType2Component)
+                    import('./pages/order-type/order-type.component').then(m => m.OrderTypeComponent)
             },
             {
                 path: 'ordertype3',
+                data: { orderType: 3 },
                 loadComponent: () =>
-                    import('./pages/order-type3/order-type3.component').then(m => m.OrderType3Component)
+                    import('./pages/order-type/order-type.component').then(m => m.OrderTypeComponent)
             },
             {
                 path: 'facility',

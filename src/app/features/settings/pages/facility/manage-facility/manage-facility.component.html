@@ -1,0 +1,145 @@
+<div class="d-modal">
+  <div class="d-head">
+    <div class="w-100 flex align-items-center ">
+      <div class="inner details">
+        <h3 class="font-semibold">Facility</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-body">
+    <form [formGroup]="itemForm">
+      <div class="modal-form-box formgrid p-fluid mt-3">
+        <div class="field" *ngIf="!itemForm.value.companyId">
+          <label>Is Global?</label>
+          <p-toggleSwitch formControlName="isGlobal" (onChange)="onChangeGlobal($event)"></p-toggleSwitch>
+        </div>
+        <div class="field" *ngIf="itemForm.value.isGlobal">
+          <label>Lab Company</label>
+          <p-select
+            [dropdownIcon]="isLabCompanyLoading ? 'pi pi-spinner pi-spin' : 'pi pi-chevron-down'"
+            formControlName="labCompanyId"
+            optionLabel="name"
+            optionValue="id"
+            [filter]="true"
+            [showClear]="true"
+            [resetFilterOnHide]="true"
+            [options]="labCompanyList"
+            placeholder="Select Lab Company"
+            class="select-patient"
+          ></p-select>
+        </div>
+        <div class="field" *ngIf="!itemForm.value.isGlobal">
+          <label class="block">Company</label>
+          <p-select
+            [dropdownIcon]="isCompanyLoading ? 'pi pi-spinner pi-spin' : 'pi pi-chevron-down'"
+            formControlName="companyId"
+            optionLabel="name"
+            optionValue="companyId"
+            [filter]="true"
+            [showClear]="true"
+            [resetFilterOnHide]="true"
+            [options]="companyList"
+            placeholder="Select Company"
+            class="select-patient"
+          ></p-select>
+        </div>
+        <div class="field" *ngIf="itemForm.get('isGlobal')!.value === false && locationList.length > 0 && itemForm.get('companyId')?.value">
+          <label class="block required-label">Location</label>
+          <p-select
+            [options]="locationList"
+            optionLabel="name"
+            optionValue="locationId"
+            formControlName="locationId"
+            [showClear]="true"
+            placeholder="Select Address"
+            appendTo="body"
+            class="full-dropdown"
+          ></p-select>
+        </div>
+        <div class="field" *ngIf="itemForm.get('isGlobal')!.value && locationList.length > 0 && itemForm.get('labCompanyId')?.value">
+          <label class="block required-label">Lab location</label>
+          <p-select
+            [options]="locationList"
+            optionLabel="name"
+            optionValue="locationId"
+            formControlName="labLocationId"
+            [showClear]="true"
+            placeholder="Select Address"
+            appendTo="body"
+            class="full-dropdown"
+          ></p-select>
+        </div>
+        <div class="field">
+          <label class="block">Name<span class="required-label"></span></label>
+          <input type="text" pInputText placeholder="Name" formControlName="name" required />
+        </div>
+
+        <div class="field">
+          <label class="block">Primary Contact Name<span class="required-label"></span></label>
+          <input type="text" pInputText placeholder="Primary Contact Name" formControlName="primaryContactName" required />
+        </div>
+
+        <div class="field">
+          <label class="block">Address 1<span class="required-label"></span></label>
+          <input type="text" pInputText placeholder="Address 1" maxlength="100" formControlName="address1" required />
+        </div>
+        <div class="field">
+          <label class="block">Address 2</label>
+          <input type="text" pInputText placeholder="Address 2" maxlength="100" formControlName="address2" />
+        </div>
+
+        <div class="field">
+          <label class="block">Email</label>
+          <input type="email" pInputText placeholder="Email" formControlName="email" />
+        </div>
+        <div class="field">
+          <label class="block">Phone Number</label>
+          <p-inputMask mask="99999 99999" placeholder="Phone Number" formControlName="phone"></p-inputMask>
+        </div>
+
+        <div class="field ">
+          <label for="city" class="block">City</label>
+          <input id="city" placeholder="City" formControlName="city" type="text" pInputText />
+        </div>
+
+        <div class="field ">
+          <label for="State" class="block">State</label>
+          <input id="State" placeholder="State" formControlName="state" type="text" pInputText />
+        </div>
+
+        <div class="field ">
+          <label for="Country" class="block">Country</label>
+          <input id="Country" placeholder="Country" formControlName="country" type="text" pInputText />
+        </div>
+
+        <div class="field">
+          <label for="zip" class="block">Zipcode</label>
+          <input type="text" placeholder="Zipcode" pInputText formControlName="zip" />
+        </div>
+
+        <div class="field">
+          <label for="fax" class="block">Fax</label>
+          <input type="text" placeholder="Fax" pInputText formControlName="fax" />
+        </div>
+
+        <div class="p-field mt-3" formArrayName="facilityTypeIdList">
+          <label for="facilityType" class="block mb-2">Facility Type</label>
+          <ng-container *ngFor="let item of facilityTypeList; let i = index">
+            <div class="flex align-items-center mb-2 gap-2">
+              <p-checkbox [value]="item?.id" [binary]="true" [formControlName]="i" inputId="{{ item?.id }}"></p-checkbox>
+              <label for="{{ item?.id }}">{{ item?.name }}</label>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="d-footer">
+    <div class="footer">
+      <button pButton pRipple type="button" (click)="closeModel()" label="Cancel" class="p-button-secondary p-button-text"></button>
+      <button pButton pRipple type="button" [label]="itemForm.value.id ? 'Update' : 'Submit'" [disabled]="itemForm.invalid" (click)="submitItem()" class="p-button-raised"></button>
+    </div>
+  </div>
+</div>

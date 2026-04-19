@@ -2,6 +2,7 @@
 @use './tailwind.css';
 @use './layout/layout.scss';
 @use './demo/demo.scss';
+@use './reusable.scss';
 @import "primeicons/primeicons.css";
 
 
@@ -89,5 +90,11 @@ body {
 
   .p-dialog-header {
     display: none;
+  }
+}
+.master-order-item{
+  padding: 1rem;
+  h3{
+    margin: 0 !important;
   }
 }

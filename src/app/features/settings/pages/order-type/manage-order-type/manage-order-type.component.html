@@ -1,0 +1,81 @@
+<div class="d-modal">
+  <div class="d-head">
+    <div class="w-100 flex align-items-center ">
+      <div class="inner details">
+        <h3 class="font-semibold">Order Type {{ itemConfig.data.orderType }}</h3>
+      </div>
+      <div class="action ml-auto ml-2">
+        <button
+          pButton
+          pRipple
+          icon="pi pi-times"
+          (click)="closeModel()"
+          class="p-button-rounded p-button-secondary p-button-text"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <div class="d-body">
+    <div class="surface-card">
+      <form [formGroup]="itemForm">
+        <div class="modal-form-box formgrid p-fluid mt-3">
+          <div class="field">
+            <label class="font-medium text-900">Name <span class="required-label"></span></label>
+            <input
+              type="text"
+              placeholder="Name"
+              pInputText
+              appAutoFocus
+              formControlName="name"
+              maxlength="100"
+              class="w-100"
+            />
+          </div>
+          <div class="field">
+            <label class="font-medium text-900">Order Category <span class="required-label"></span></label>
+            <p-select
+              [options]="orderCategoryList"
+              placeholder="Select Order Category"
+              optionLabel="name"
+              styleClass="w-100"
+              formControlName="orderCategoryId"
+              optionValue="id"
+            ></p-select>
+          </div>
+          <ng-container *ngIf="itemConfig.data.orderType == 2">
+            <div class="field">
+              <label class="font-medium text-900">Code </label>
+              <input type="text" placeholder="Enter code" pInputText formControlName="code" class="w-100" />
+            </div>
+            <div class="field">
+              <label class="font-medium text-900">Cpt Code </label>
+              <input type="text" placeholder="Enter cpt code" pInputText formControlName="cptCode" class="w-100" />
+            </div>
+          </ng-container>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="d-footer">
+    <div class="footer flex">
+      <button
+        pButton
+        pRipple
+        type="button"
+        (click)="closeModel()"
+        label="Cancel"
+        class="p-button-secondary p-button-text ml-auto "
+      ></button>
+      <button
+        pButton
+        pRipple
+        type="submit"
+        [label]="(itemForm.value.id === 0) ? 'Submit' : 'Update'"
+        [disabled]="itemForm.invalid"
+        (click)="submiteItem(itemForm.value.id)"
+        class="p-button-raised ml-2"
+      ></button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.d-modal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: none;
+  background: #ffffff;
+  border-radius: 0;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
+  overflow: hidden;
+}
+
+.d-head {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.d-head .inner.details h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.d-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1.5rem;
+  background: #f8fafc;
+}
+
+.modal-form-box {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field label {
+  font-weight: 600;
+  color: #334155;
+}
+
+.full-dropdown,
+.select-patient {
+  width: 100%;
+}
+
+.required-label::after {
+  content: '*';
+  margin-left: 0.25rem;
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.d-footer {
+  padding: 1rem 1.5rem;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.d-footer button {
+  min-width: 96px;
+}
+
+.facility-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .modal-form-box {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .d-modal {
+    width: 100%;
+    border-radius: 1rem;
+  }
+}
