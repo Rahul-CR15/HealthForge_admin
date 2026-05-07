@@ -1,0 +1,109 @@
+:host {
+  display: block;
+}
+
+:host ::ng-deep {
+  /* Strip all card chrome */
+  .p-card {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+
+    .p-card-body {
+      padding: 0 !important;
+    }
+    .p-card-header {
+      padding: 0 !important;
+    }
+  }
+
+  /* Clean order list */
+  .p-orderlist {
+    .p-orderlist-controls {
+      display: none !important;
+    }
+  }
+
+  .p-orderlist-list {
+    border: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  .p-orderlist-item {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+
+    &.p-highlight {
+      background: transparent !important;
+      color: inherit !important;
+      box-shadow: none !important;
+    }
+  }
+
+  /* Flat inputs */
+  .p-inputtext {
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    font-size: 13px !important;
+
+    &:focus {
+      box-shadow: none !important;
+    }
+  }
+
+  .p-select {
+    border-radius: 6px !important;
+    box-shadow: none !important;
+
+    .p-select-label {
+      font-size: 13px !important;
+    }
+  }
+
+  /* Flat input groups */
+  .p-inputgroup-addon {
+    border-radius: 6px 0 0 6px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.03em !important;
+  }
+
+  /* Flat checkboxes */
+  .p-checkbox-label {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+  }
+
+  /* Clean buttons */
+  .p-button {
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    font-weight: 600 !important;
+
+    &:hover {
+      box-shadow: none !important;
+    }
+  }
+
+  /* Divider */
+  .p-divider {
+    &::before {
+      border-color: var(--surface-100) !important;
+    }
+  }
+
+  /* CKEditor */
+  .ck-editor__editable {
+    min-height: 180px !important;
+    border-radius: 0 0 6px 6px !important;
+  }
+
+  .ck-toolbar {
+    border-radius: 6px 6px 0 0 !important;
+  }
+}

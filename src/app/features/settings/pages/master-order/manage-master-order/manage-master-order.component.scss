@@ -16,12 +16,13 @@
     justify-content: space-between;
     padding: 1rem 1.5rem;
     border-bottom: 1px solid var(--surface-border);
-    background: #fff;
+    background: var(--surface-card);
 
     h2 {
       margin: 0;
       font-size: 1.25rem;
       font-weight: 600;
+      color: var(--text-color);
     }
   }
 
@@ -30,7 +31,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding: 1.25rem 1.5rem;
-    background: #fff;
+    background: var(--surface-card);
   }
 
   .d-footer {
@@ -40,7 +41,7 @@
     justify-content: flex-end;
     gap: 0.5rem;
     border-top: 1px solid var(--surface-border);
-    background: #fff;
+    background: var(--surface-card);
     padding: 0.875rem 1.5rem;
   }
 }

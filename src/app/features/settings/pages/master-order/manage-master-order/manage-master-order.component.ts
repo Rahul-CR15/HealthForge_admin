@@ -8,6 +8,7 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { RippleModule } from 'primeng/ripple';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-master-order',
@@ -49,7 +50,8 @@ export class ManageMasterOrderComponent implements OnInit {
 
   constructor(
     public config: DynamicDialogConfig,
-    public ref: DynamicDialogRef
+    public ref: DynamicDialogRef,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -139,6 +141,11 @@ export class ManageMasterOrderComponent implements OnInit {
   resetItemForm() {
     this.masterOrderForm.reset();
     this.isAddNew = false;
+  }
+
+  addReportParameter(item: any) {
+    this.ref.close();
+    this.router.navigate(['/settings/report-parameter', item.id]);
   }
 
   closeModel() {

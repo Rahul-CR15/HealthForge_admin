@@ -77,6 +77,11 @@ export const settingsRoutes: Routes = [
                 path: 'doctor-type',
                 loadComponent: () =>
                     import('./pages/doctor-type/doctor-type.component').then(m => m.DoctorTypeComponent)
+            },
+            {
+                path: 'report-parameter/:id',
+                loadComponent: () =>
+                    import('./pages/report-parameter/report-parameter.component').then(m => m.ReportParameterComponent)
             }
         ]
     }

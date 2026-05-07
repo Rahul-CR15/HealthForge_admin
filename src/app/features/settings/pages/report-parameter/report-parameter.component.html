@@ -1,0 +1,297 @@
+<div class="bg-surface-0 dark:bg-surface-900 text-surface-900 dark:text-surface-0 min-h-screen">
+
+  <!-- Header -->
+  <div class="border-b border-surface-200 dark:border-surface-700 px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <a routerLink="/settings/master-order" class="text-surface-500 hover:text-surface-900 dark:hover:text-surface-0 no-underline">
+        <i class="pi pi-arrow-left"></i>
+      </a>
+      <h1 class="text-lg font-semibold m-0">{{reportData?.name || 'Report Parameters'}}</h1>
+    </div>
+    <div class="flex items-center gap-3">
+      <p-select
+        [options]="parameterOptions"
+        optionLabel="name"
+        optionValue="componentTypeId"
+        [(ngModel)]="selectedComponentTypeId"
+        placeholder="Add Component"
+        (onChange)="addNewParameter($event.value)"
+        (onClear)="clearComponentType($event)"
+        appendTo="body"
+        [showClear]="true"
+        [disabled]="labOrderComponents.length > 0 && (labOrderComponents[labOrderComponents.length - 1].isNew ?? false)"
+        styleClass="w-48">
+      </p-select>
+      <p-button label="Save" icon="pi pi-check" severity="primary" (click)="submitReportComponent()" size="small"></p-button>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="grid grid-cols-12 min-h-[calc(100vh-65px)]">
+
+    <!-- Sidebar -->
+    <div class="col-span-3 border-r border-surface-200 dark:border-surface-700">
+      <div class="px-4 py-3 border-b border-surface-100 dark:border-surface-800">
+        <span class="text-xs font-semibold text-surface-400 uppercase tracking-wide">Components</span>
+      </div>
+
+      @if (labOrderComponents && labOrderComponents.length > 0) {
+        <p-orderList
+          [value]="labOrderComponents"
+          [(selection)]="selectedReportComponent"
+          [listStyle]="{ 'max-height': 'calc(100vh - 140px)' }"
+          [dragdrop]="true"
+          (onSelectionChange)="onReportComponentSelect($event)"
+          (onReorder)="onReOrderComponent($event)">
+          <ng-template let-param pTemplate="item">
+            <div class="px-4 py-3 cursor-pointer border-b border-surface-50 dark:border-surface-800 transition-colors"
+              [class.bg-surface-100]="selectedLabComponent?.guid === param.guid"
+              [class.dark:bg-surface-800]="selectedLabComponent?.guid === param.guid">
+              <div class="text-sm font-medium">{{ param.componentName || 'Untitled' }}</div>
+              <div class="text-xs text-surface-400 mt-0.5">{{ param.componentType }}</div>
+            </div>
+          </ng-template>
+        </p-orderList>
+      } @else {
+        <div class="px-4 py-8 text-center">
+          <p class="text-sm text-surface-400">No components added.</p>
+        </div>
+      }
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-span-9 bg-surface-0 dark:bg-surface-900">
+      @if (labOrderComponents && labOrderComponents.length > 0) {
+        <div class="p-6">
+
+          <!-- Section: General Settings -->
+          <div class="mb-8">
+            <h2 class="text-xs font-semibold text-surface-400 uppercase tracking-wide mb-4">General Settings</h2>
+
+            <div class="grid grid-cols-12 gap-x-6 gap-y-5">
+              <div class="col-span-4 flex flex-col gap-1">
+                <label class="text-xs font-medium text-surface-500">Name *</label>
+                <input type="text" pInputText class="w-full" placeholder="Component name"
+                  [(ngModel)]="selectedLabComponent.componentName" />
+              </div>
+              <div class="col-span-4 flex flex-col gap-1">
+                <label class="text-xs font-medium text-surface-500">Method</label>
+                <input type="text" pInputText class="w-full" placeholder="Method name"
+                  (focus)="handleFocus($event)" [(ngModel)]="selectedLabComponent.method" />
+              </div>
+              <div class="col-span-4 flex flex-col gap-1">
+                <label class="text-xs font-medium text-surface-500">Type</label>
+                <p-select [options]="parameterOptions" [showClear]="true" optionLabel="name" optionValue="componentTypeId"
+                  appendTo="body" styleClass="w-full" placeholder="Select" [(ngModel)]="selectedLabComponent.componentTypeId"
+                  (onChange)="onComponentTypeChange($event, selectedLabComponent)">
+                </p-select>
+              </div>
+              <div class="col-span-4 flex flex-col gap-1">
+                <label class="text-xs font-medium text-surface-500">Unit</label>
+                <p-select [options]="labOrderUnits" [showClear]="true" optionLabel="name" optionValue="unitId"
+                  appendTo="body" styleClass="w-full" placeholder="Select unit" [(ngModel)]="selectedLabComponent.unitId">
+                </p-select>
+              </div>
+              <div class="col-span-4 flex flex-col gap-1">
+                <label class="text-xs font-medium text-surface-500">Integration Code</label>
+                <input type="text" pInputText class="w-full" placeholder="Code"
+                  [(ngModel)]="selectedLabComponent.integrationCode" />
+              </div>
+              @if (selectedLabComponent?.componentType?.toLowerCase() === 'result range' ||
+                   selectedLabComponent?.componentType?.toLowerCase() === 'age result range') {
+                <div class="col-span-4 flex items-end pb-1">
+                  <p-checkbox label="Gender Specific" [binary]="true"
+                    [(ngModel)]="selectedLabComponent.isGenderSpecific">
+                  </p-checkbox>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Section: Result Range -->
+          @if (selectedLabComponent?.componentType?.toLowerCase() === 'result range') {
+            <div class="mb-8">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xs font-semibold text-surface-400 uppercase tracking-wide m-0">Ranges</h2>
+                <p-button label="Add Range" icon="pi pi-plus" [text]="true" (click)="addRange()" size="small"></p-button>
+              </div>
+
+              @for (range of selectedLabComponent?.componentResultRanges; track range; let i = $index) {
+                <div class="grid grid-cols-12 gap-4 items-start py-4"
+                  [class.border-b]="i < selectedLabComponent.componentResultRanges.length - 1"
+                  [class.border-surface-100]="i < selectedLabComponent.componentResultRanges.length - 1"
+                  [class.dark:border-surface-800]="i < selectedLabComponent.componentResultRanges.length - 1">
+
+                  @if (selectedLabComponent.isGenderSpecific) {
+                    <div class="col-span-2">
+                      <label class="text-xs text-surface-400 mb-1 block">Gender</label>
+                      <p-select [options]="genderOptions" optionLabel="label" optionValue="id" appendTo="body"
+                        placeholder="Select" [(ngModel)]="range.gender" styleClass="w-full">
+                      </p-select>
+                    </div>
+                  }
+
+                  <div [class]="selectedLabComponent.isGenderSpecific ? 'col-span-4' : 'col-span-6'">
+                    <label class="text-xs text-surface-400 mb-1 block">Range Name</label>
+                    <input type="text" pInputText class="w-full" placeholder="e.g. Normal"
+                      [(ngModel)]="range.rangeName" />
+                  </div>
+
+                  <div class="col-span-2">
+                    <label class="text-xs text-surface-400 mb-1 block">Min</label>
+                    <input type="number" pInputText class="w-full" [(ngModel)]="range.min" />
+                  </div>
+
+                  <div class="col-span-2">
+                    <label class="text-xs text-surface-400 mb-1 block">Max</label>
+                    <input type="number" pInputText class="w-full" [(ngModel)]="range.max" />
+                  </div>
+
+                  <div class="col-span-2 flex items-end gap-2 pb-0.5">
+                    <p-colorPicker format="hex" [(ngModel)]="range.colour"></p-colorPicker>
+                    <button pButton icon="pi pi-trash" class="p-button-text p-button-danger p-button-sm"
+                      (click)="deleteReportComponent($event, range)"></button>
+                  </div>
+
+                  <div class="col-span-12 flex items-center gap-4 mt-1">
+                    <p-checkbox label="Verify" [binary]="true" [(ngModel)]="range.isConfirmationText"></p-checkbox>
+                    <p-checkbox label="Bold" [binary]="true" [(ngModel)]="range.isBold"></p-checkbox>
+                    <p-checkbox label="Underline" [binary]="true" [(ngModel)]="range.isUnderLine"></p-checkbox>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Section: Descriptive -->
+          @if (selectedLabComponent?.componentType?.toLowerCase() === 'descriptive (no ranges)') {
+            <div class="mb-8">
+              <h2 class="text-xs font-semibold text-surface-400 uppercase tracking-wide mb-4">Description</h2>
+              <div class="border border-surface-200 dark:border-surface-700 rounded-md overflow-hidden">
+                @if (editorVisible) {
+                  <ckeditor [editor]="Editor" [(ngModel)]="selectedLabComponent.description" [config]="reportConfig"
+                    (ngModelChange)="onEditorChange($event)">
+                  </ckeditor>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Section: Age Result Range -->
+          @if (selectedLabComponent?.componentType?.toLowerCase() === 'age result range') {
+            <div class="mb-8">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xs font-semibold text-surface-400 uppercase tracking-wide m-0">Age Based Ranges</h2>
+                <p-button label="Add Range" icon="pi pi-plus" [text]="true" (click)="addRange()" size="small"></p-button>
+              </div>
+
+              @for (range of selectedLabComponent?.componentResultRanges; track range; let i = $index) {
+                <div class="py-4 border-b border-surface-100 dark:border-surface-800">
+
+                  <div class="grid grid-cols-12 gap-4 items-end mb-4">
+                    <div class="col-span-1 flex items-end pb-1">
+                      <p-radioButton name="default" [value]="range.guid" [(ngModel)]="selectedDefault"
+                        (onClick)="onDefaultSelected(range)">
+                      </p-radioButton>
+                    </div>
+
+                    <div class="col-span-2">
+                      <label class="text-xs text-surface-400 mb-1 block">Age Unit</label>
+                      <p-select [options]="ageUnits" [showClear]="true" placeholder="Unit" [(ngModel)]="range.unitId"
+                        (onChange)="onUnitChange($event, range)" optionLabel="label" optionValue="id" appendTo="body"
+                        styleClass="w-full">
+                      </p-select>
+                    </div>
+
+                    @if (selectedLabComponent.isGenderSpecific) {
+                      <div class="col-span-2">
+                        <label class="text-xs text-surface-400 mb-1 block">Gender</label>
+                        <p-select [options]="genderOptions" optionLabel="label" optionValue="id" appendTo="body"
+                          placeholder="Select" [(ngModel)]="range.gender" styleClass="w-full">
+                        </p-select>
+                      </div>
+                    }
+
+                    <div [class]="selectedLabComponent.isGenderSpecific ? 'col-span-3' : 'col-span-5'">
+                      <label class="text-xs text-surface-400 mb-1 block">Range Name</label>
+                      <input type="text" pInputText placeholder="Name" [(ngModel)]="range.rangeName" class="w-full" />
+                    </div>
+
+                    <div class="col-span-2">
+                      <label class="text-xs text-surface-400 mb-1 block">Age From</label>
+                      <input type="number" pInputText class="w-full" [(ngModel)]="range.minAge" (input)="onAgeInput($event, range.unitId)" />
+                    </div>
+
+                    <div class="col-span-2">
+                      <label class="text-xs text-surface-400 mb-1 block">Age To</label>
+                      <input type="number" pInputText class="w-full" [(ngModel)]="range.maxAge" (input)="onAgeInput($event, range.unitId)" />
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-12 gap-4 items-end">
+                    <div class="col-span-1"></div>
+                    <div class="col-span-2">
+                      <label class="text-xs text-surface-400 mb-1 block">Min</label>
+                      <input type="text" pInputText class="w-full" [(ngModel)]="range.min" />
+                    </div>
+                    <div class="col-span-2">
+                      <label class="text-xs text-surface-400 mb-1 block">Max</label>
+                      <input type="text" pInputText class="w-full" [(ngModel)]="range.max" />
+                    </div>
+                    <div class="col-span-7 flex items-end gap-4 pb-1">
+                      <p-checkbox label="Verify" [binary]="true" [(ngModel)]="range.isConfirmationText"></p-checkbox>
+                      <p-checkbox label="Bold" [binary]="true" [(ngModel)]="range.isBold"></p-checkbox>
+                      <p-colorPicker format="hex" [(ngModel)]="range.colour"></p-colorPicker>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Section: Formula -->
+          @if (selectedLabComponent?.componentType?.toLowerCase() === 'formula') {
+            <div class="mb-8">
+              <h2 class="text-xs font-semibold text-surface-400 uppercase tracking-wide mb-4">Formula</h2>
+
+              <div class="flex flex-wrap gap-2 mb-4">
+                @if (isComponentCodeLoading) {
+                  @for (item of [].constructor(4); track $index) {
+                    <p-skeleton height="28px" width="80px"></p-skeleton>
+                  }
+                } @else {
+                  @for (component of componentCodeList; track component) {
+                    <span class="px-3 py-1 text-xs font-medium border border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-800 text-surface-700 dark:text-surface-300">
+                      {{ component.code }} = {{ component.componentName }}
+                    </span>
+                  }
+                }
+              </div>
+
+              <div class="grid grid-cols-12 gap-4">
+                <div class="col-span-6 flex flex-col gap-1">
+                  <label class="text-xs font-medium text-surface-500">Expression</label>
+                  <input type="text" pInputText class="w-full font-mono" placeholder="(A + B) / C"
+                    [(ngModel)]="selectedLabComponent.formula" />
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- Actions -->
+          <div class="flex items-center justify-end gap-3 pt-6 border-t border-surface-100 dark:border-surface-800">
+            <p-button label="Discard" [outlined]="true" severity="secondary" (click)="cancelReportComponent(selectedLabComponent)" size="small"></p-button>
+            <p-button label="Update Component" icon="pi pi-check" severity="primary" (click)="submitReportComponent()" size="small"></p-button>
+          </div>
+        </div>
+
+      } @else {
+        <!-- Empty State -->
+        <div class="flex flex-col items-center justify-center h-full py-24">
+          <i class="pi pi-box text-4xl text-surface-300 mb-4"></i>
+          <p class="text-sm text-surface-500 m-0">Select a component type above to begin.</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>
